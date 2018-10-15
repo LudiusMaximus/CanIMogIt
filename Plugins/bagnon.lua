@@ -18,14 +18,10 @@ if IsAddOnLoaded("Bagnon") then
         -- load everything immediately, so the OnUpdate needs to run until those frames are opened.
         if (bag == 0 and slot == 0) or (bag == 100 and slot == 0) then return end
 
-        -- For cached Bagnon bags, GetContainerItemLink(bag, slot) would not work in GetTooltipText(nil, bag, slot).
-        -- Therefore use GetTooltipText(self:GetParent():GetItem()) as fallback.
-        if (CanIMogIt:GetTooltipText(nil, bag, slot) == "") then
-            CIMI_SetIcon(self, BagnonItemButton_CIMIUpdateIcon, CanIMogIt:GetTooltipText(self:GetParent():GetItem()))
-        else
-            CIMI_SetIcon(self, BagnonItemButton_CIMIUpdateIcon, CanIMogIt:GetTooltipText(nil, bag, slot))
-        end
-
+        -- For cached Bagnon bags, GetContainerItemLink(bag, slot) would not work in CanIMogIt:GetTooltipText(nil, bag, slot).
+        -- Therefore provide GetTooltipText() with itemLink here.
+        local itemLink = self:GetParent():GetItem()
+        CIMI_SetIcon(self, BagnonItemButton_CIMIUpdateIcon, CanIMogIt:GetTooltipText(itemLink))
     end
 
     function CIMI_BagnonUpdate(self)
